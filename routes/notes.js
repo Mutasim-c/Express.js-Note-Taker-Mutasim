@@ -1,31 +1,31 @@
 const notes = require('express').Router();
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');//imports id npm
 const {
   readFromFile,
   readAndAppend,
   writeToFile,
-} = require('../helpers/fsUtils');
+} = require('../helpers/fsUtils');//imports helper functions
 
 notes.get('/', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
-  });
+  });//returns all note in db.json
   
 notes.post('/', (req, res) => {
   console.log(req.body);
 
   const { title, text } = req.body;
-
+  //checks to see if object and title and text key before making object
   if (title && text) {
     const newNote = {
       title,
       text,
-      id: uuidv4(),
+      id: uuidv4(),//adds unique id to the new object
     };
 
-    readAndAppend(newNote, './db/db.json');
-    res.json(newNote);
+    readAndAppend(newNote, './db/db.json');//appends to db.json file
+    res.json(newNote);//returns new note
   } else {
-    res.json('Error in adding tip');
+    res.json('Error in adding tip');//returns error message if not successfully created new note
   }
 });
 
